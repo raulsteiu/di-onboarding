@@ -14,6 +14,7 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;font-size:16px}
 .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.wrap.wide{max-width:1480px}
 h1,h2,h3,h4{line-height:1.1;letter-spacing:-.02em;margin:0}
 p{margin:0 0 12px}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
@@ -49,8 +50,8 @@ code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:.92em;backg
 .maphead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
 .progress{font-size:14px;color:var(--ink2);display:flex;gap:14px;align-items:center}
 .mapscroll{overflow-x:auto;background:#fff;border:1px solid var(--line)}
-.map{position:relative;display:grid;grid-template-columns:168px repeat(7,minmax(140px,1fr));min-width:1120px}
-.rail{position:absolute;top:32px;height:4px;left:calc(168px + (100% - 168px)/14);right:calc((100% - 168px)/14);background:var(--soft);z-index:0}
+.map{--lab:150px;position:relative;display:grid;grid-template-columns:var(--lab) repeat(7,minmax(120px,1fr));min-width:990px}
+.rail{position:absolute;top:32px;height:4px;left:calc(var(--lab) + (100% - var(--lab))/14);right:calc((100% - var(--lab))/14);background:var(--soft);z-index:0}
 .rail i{display:block;height:100%;width:0;background:var(--red);transition:width .5s}
 .st{position:relative;z-index:1;background:none;border:0;font:inherit;color:inherit;padding:12px 8px 14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .node{width:44px;height:44px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:18px;transition:background .2s,box-shadow .2s}
@@ -72,8 +73,8 @@ code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:.92em;backg
 
 /* PHASE DETAIL */
 #detail{background:var(--paper);padding-top:8px}
-.tabs{display:flex;overflow-x:auto;border-bottom:2px solid var(--line);margin:0 0 36px}
-.tab{font:inherit;font-weight:700;font-size:14.5px;background:none;border:0;padding:14px 18px;cursor:pointer;white-space:nowrap;color:var(--ink2);border-bottom:4px solid transparent;margin-bottom:-2px}
+.tabs{display:flex;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -2px 0 var(--line);margin:0 0 36px;scrollbar-width:thin}
+.tab{flex:1 1 auto;text-align:center;font:inherit;font-weight:700;font-size:14.5px;background:none;border:0;padding:14px 18px;cursor:pointer;white-space:nowrap;color:var(--ink2);border-bottom:4px solid transparent}
 .tab:hover{color:var(--ink)}
 .tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--deep)}
 .tab.isdone::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:8px}
@@ -209,7 +210,7 @@ footer{padding:36px 0 60px;color:var(--ink2);font-size:13.5px;border-top:1px sol
 
 <main>
 <section class="sec" id="route">
-  <div class="wrap">
+  <div class="wrap wide">
     <h2>The route</h2>
     <p class="intro">Seven phases, three lanes. Read left to right to see who does what at each stage. The red diamonds are gates: nothing moves forward until the gate is met. Most delays in our work happen at phase 2, waiting on someone else.</p>
     <div class="maphead">
