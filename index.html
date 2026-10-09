@@ -25,6 +25,9 @@ code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:.92em;backg
 .topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 0;font-size:14px;color:#c9d3ee;position:relative;z-index:1}
 .topbar b{color:#fff;font-size:17px}
 .hero h1{font-size:clamp(2.5rem,6vw,4.7rem);font-weight:800;max-width:14ch;letter-spacing:-.04em;margin:52px 0 22px;position:relative;z-index:1}
+.note{background:#EAF1FA;border-left:5px solid var(--deep);padding:14px 18px;margin:0 0 26px;font-size:15px}
+.note b{color:var(--ink)}
+.note p{margin:0}
 .lede{max-width:58ch;font-size:1.15rem;color:#d7def2;position:relative;z-index:1}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:48px;max-width:880px;position:relative;z-index:1}
 .three div{border-top:4px solid var(--red);padding-top:12px}
@@ -199,7 +202,7 @@ footer{padding:36px 0 60px;color:var(--ink2);font-size:13.5px;border-top:1px sol
   <div class="wrap">
     <div class="topbar"><b>Our company Data Integration</b><span>Team onboarding, internal use</span></div>
     <h1>From signed contract to live data</h1>
-    <p class="lede">Every integration we build follows the same route. Learn the route first, then open any stop to see the detail. Start by clicking a phase on the map below.</p>
+    <p class="lede">Every integration we build follows the same route, with one phase (the Postman check) that only applies to API sources. Learn the route first, then open any stop to see the detail. Start by clicking a phase on the map below.</p>
     <div class="three">
       <div><strong>Pull</strong><span>We fetch data from the source. We never accept pushes.</span></div>
       <div><strong>Batch</strong><span>Scheduled loads only. Nothing live, nothing streaming.</span></div>
@@ -212,7 +215,7 @@ footer{padding:36px 0 60px;color:var(--ink2);font-size:13.5px;border-top:1px sol
 <section class="sec" id="route">
   <div class="wrap wide">
     <h2>The route</h2>
-    <p class="intro">Seven phases, three lanes. Read left to right to see who does what at each stage. The red diamonds are gates: nothing moves forward until the gate is met. Most delays in our work happen at phase 2, waiting on someone else.</p>
+    <p class="intro">Seven phases, three lanes. Read left to right to see who does what at each stage. The red diamonds are gates: nothing moves forward until the gate is met. Phase 3 applies to API sources only and is skipped for SQL and SFTP sources. Most delays in our work happen at phase 2, waiting on someone else.</p>
     <div class="maphead">
       <div class="progress"><span id="progText">0 of 7 phases marked complete</span><button class="btn" id="resetBtn" type="button">Reset progress</button></div>
     </div>
@@ -226,7 +229,7 @@ footer{padding:36px 0 60px;color:var(--ink2);font-size:13.5px;border-top:1px sol
     <div class="tabs" id="phaseTabs" role="tablist">
       <button class="tab" role="tab" data-phase="1">1 Scoping call</button>
       <button class="tab" role="tab" data-phase="2">2 Provisioning</button>
-      <button class="tab" role="tab" data-phase="3">3 Postman check</button>
+      <button class="tab" role="tab" data-phase="3">3 Postman check (API only)</button>
       <button class="tab" role="tab" data-phase="4">4 DI Studio build</button>
       <button class="tab" role="tab" data-phase="5">5 Staging check</button>
       <button class="tab" role="tab" data-phase="6">6 Load and schedule</button>
@@ -303,7 +306,7 @@ footer{padding:36px 0 60px;color:var(--ink2);font-size:13.5px;border-top:1px sol
             <label class="chk"><input type="checkbox" data-id="g2-2"> MySQL staging credentials in hand</label>
             <label class="chk"><input type="checkbox" data-id="g2-3"> API credentials received: client ID, secret, OAuth registration where relevant</label>
             <label class="chk"><input type="checkbox" data-id="g2-4"> Integration user created with read permission on the financial tables</label>
-            <label class="chk"><input type="checkbox" data-id="g2-5"> Test endpoint reachable from outside the client network</label>
+            <label class="chk"><input type="checkbox" data-id="g2-5"> Test endpoint reachable from outside the client network (API sources)</label>
             <label class="chk"><input type="checkbox" data-id="g2-6"> Firewall rules allow our company's DIS Controller IPs where required</label>
             <label class="chk"><input type="checkbox" data-id="g2-7"> Sample data or a test environment available</label>
           </div>
@@ -364,24 +367,25 @@ Regards,
 
     <!-- PHASE 3 -->
     <article class="phase" id="p3" hidden>
-      <div class="phead"><h3>3. Postman check</h3>
-      <p class="goal">Prove the connection works with real data before you open DI Studio. This is the gate that protects your time.</p></div>
+      <div class="phead"><h3>3. Postman check (API sources only)</h3>
+      <p class="goal">For API sources on a hosted DIS Controller, prove the connection works with real data before you open DI Studio. This is the gate that protects your time.</p></div>
+      <div class="note"><p><b>This step does not always happen.</b> The Postman check applies only to API sources on a hosted DIS Controller. SQL and SFTP sources have no Postman check: skip this phase, mark it complete and go straight to the build.</p></div>
       <div class="pgrid">
         <div>
           <h4 class="sub">Who does what</h4>
           <ul class="who">
-            <li style="--lc:var(--deep)"><b>Us</b><span>Build the Postman requests, authentication first, then a data endpoint, then page two.</span></li>
+            <li style="--lc:var(--deep)"><b>Us</b><span>API sources only: build the Postman requests, authentication first, then a data endpoint, then page two.</span></li>
             <li style="--lc:var(--indigo)"><b>Our company Support</b><span>Not involved.</span></li>
             <li style="--lc:var(--blue)"><b>Client</b><span>Fixes access issues when the test fails: permissions, firewall, credentials.</span></li>
           </ul>
-          <div class="gate"><h4>Exit gate: Postman returns real data</h4>
+          <div class="gate"><h4>Exit gate (API sources only): Postman returns real data</h4>
             <label class="chk"><input type="checkbox" data-id="g3-1"> The auth flow completes end to end</label>
             <label class="chk"><input type="checkbox" data-id="g3-2"> At least one endpoint returns real rows with the expected field names</label>
             <label class="chk"><input type="checkbox" data-id="g3-3"> Pagination confirmed: you can reach page 2</label>
             <label class="chk"><input type="checkbox" data-id="g3-4"> Date format confirmed from an actual response</label>
             <label class="chk"><input type="checkbox" data-id="g3-5"> Field names and data types noted, with no assumptions</label>
           </div>
-          <p>The same idea applies to SQL and file sources: prove you can read real rows before you build anything.</p>
+          <p>For SQL and SFTP sources there is no Postman check, so none of this gate applies.</p>
         </div>
         <div class="aside">
           <div class="box vba"><h4>In VBA terms</h4><p>It is testing one request in the Immediate window before you wrap it in a loop. If one call fails there, the loop will not save you.</p></div>
@@ -390,6 +394,7 @@ Regards,
       </div>
       <div class="selfcheck"><h4>Self-check</h4>
         <details class="q"><summary>The auth works but the data call returns 401. Do you start the DI Studio build?</summary><p>No. The gate is not met. Send the client the specific error and wait for access to be fixed.</p></details>
+        <details class="q"><summary>The client's ERP data comes from SQL views or an SFTP file. Do you run a Postman check?</summary><p>No. The Postman check is only for API sources on a hosted DIS Controller. Skip phase 3 and move on to the build.</p></details>
         <details class="q"><summary>Why confirm the date format from the real response?</summary><p>Each source formats dates differently, and we always normalise them in staging. Assuming a format is how wrong periods reach Our company.</p></details>
       </div>
       <div class="pfoot"><button class="btn" data-go="prev">Previous phase</button><button class="btn primary" data-go="next">Next phase</button><span class="sp"></span><button class="btn markdone" data-n="3">Mark phase complete</button></div>
@@ -408,7 +413,7 @@ Regards,
             <li style="--lc:var(--blue)"><b>Client</b><span>Answers field mapping and dimension questions as they come up. Expect back and forth.</span></li>
           </ul>
           <div class="gate"><h4>Exit gate: the job runs end to end</h4>
-            <label class="chk"><input type="checkbox" data-id="g4-1"> Connections created: source, MySQL staging, and our company's product agent</label>
+            <label class="chk"><input type="checkbox" data-id="g4-1"> Connections created: source and MySQL staging</label>
             <label class="chk"><input type="checkbox" data-id="g4-2"> Steps are sequential, and tasks inside a step are safe to run in parallel</label>
             <label class="chk"><input type="checkbox" data-id="g4-3"> Recreate and Append are not mixed against the same table in one step</label>
             <label class="chk"><input type="checkbox" data-id="g4-4"> Period logic tested in MySQL Workbench before it went into DI Studio</label>
@@ -757,14 +762,14 @@ FROM tbl_client_clean;</pre></div>
           <li><b>Team documentation:</b> house rules, source-specific guides and proven SQL transformations.</li>
           <li><b>Script templates:</b> working DI Studio scripts per source.</li>
           <li><b>Zendesk:</b> DIS, MySQL RDS, SFTP and IP whitelist requests.</li>
-          <li><b>Postman:</b> connection checks before every build.</li>
+          <li><b>Postman:</b> connection checks before an API build. Not used for SQL or SFTP sources.</li>
         </ul>
         <p style="font-size:14.5px">Ask a teammate for access to the team documentation.</p>
 
         <h4 class="sub" style="margin-top:28px">Your first week, suggested</h4>
         <label class="chk"><input type="checkbox" data-id="w1"> <span><b>Day 1.</b> Work through this route. Shadow a scoping call or review a recorded one.</span></label>
         <label class="chk"><input type="checkbox" data-id="w2"> <span><b>Day 2.</b> Read one source file end to end, ideally one matching a live client.</span></label>
-        <label class="chk"><input type="checkbox" data-id="w3"> <span><b>Day 3.</b> Run a Postman collection against a test endpoint. Note the auth, pagination and date format.</span></label>
+        <label class="chk"><input type="checkbox" data-id="w3"> <span><b>Day 3.</b> Run a Postman collection against a test API endpoint (API sources only). Note the auth, pagination and date format.</span></label>
         <label class="chk"><input type="checkbox" data-id="w4"> <span><b>Day 4.</b> Build a tiny throwaway job: script to MySQL staging in Recreate mode, then check the rows.</span></label>
         <label class="chk"><input type="checkbox" data-id="w5"> <span><b>Day 5.</b> Write one transformation from the team's SQL pattern library and walk a teammate through it.</span></label>
       </div>
@@ -796,7 +801,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 var PH=[
  {n:1,name:'Scoping call',us:'Run the call, agree the path, size the effort',sup:null,cl:'Bring IT or the ERP partner to the call',gate:'Path, owners and effort tier agreed'},
  {n:2,name:'Provisioning',us:'Raise Zendesk tickets, chase client items',sup:'Provide DIS, MySQL RDS, SFTP, IP whitelist',cl:'Credentials, integration user, firewall rules',gate:'Every dependency delivered'},
- {n:3,name:'Postman check',us:'Prove auth, data and pagination in Postman',sup:null,cl:'Fix access if the test fails',gate:'Real rows come back'},
+ {n:3,name:'Postman check (API only)',us:'API sources only: prove auth, data and pagination in Postman. Skipped for SQL and SFTP',sup:null,cl:'Fix access if the test fails',gate:'API sources: real rows come back'},
  {n:4,name:'DI Studio build',us:'Extract, stage in MySQL, transform, load',sup:'Help with infrastructure issues',cl:'Answer mapping and dimension questions',gate:'Job runs end to end'},
  {n:5,name:'Staging check',us:'Count rows, check periods, trace one account',sup:null,cl:'Confirm unclear mappings',gate:'Staging data proven correct'},
  {n:6,name:'Load and schedule',us:'Manual first run, then schedule in Process Manager',sup:null,cl:'Confirm the cadence',gate:'First load validated'},
